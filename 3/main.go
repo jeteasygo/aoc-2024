@@ -12,9 +12,9 @@ func main() {
 	file, _ := os.ReadFile("./input.txt")
 	vals := strings.Split(string(file), "\n")
 
-	_ = part1(vals)
+	p1 := part1(vals)
 	p2 := part2(vals)
-	// fmt.Println("Part 1:", p1)
+	fmt.Println("Part 1:", p1)
 	fmt.Println("Part 2:", p2)
 }
 
@@ -57,7 +57,6 @@ func part2(vals []string) int {
 				x1, _ := strconv.Atoi(numbers[0])
 				x2, _ := strconv.Atoi(numbers[1])
 				total += (x1 * x2)
-				fmt.Println(curr)
 			}
 		}
 	}
