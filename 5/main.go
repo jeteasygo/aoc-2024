@@ -22,17 +22,8 @@ func main() {
 		updatesInts = append(updatesInts, updateInts)
 	}
 
-	p1 := part1(po, updatesInts)
-	p2 := part2(po, updatesInts)
-	fmt.Println("Part 1:", p1)
-	fmt.Println("Part 2:", p2)
-}
-
-func part1(pageOrders []string, updates [][]int) int {
-	var total int
 	pageOrder := make(map[int][]int)
-
-	for _, po := range pageOrders {
+	for _, po := range po {
 		curr := strings.Split(po, "|")
 		if len(curr) == 2 {
 			y, _ := strconv.Atoi(curr[1])
@@ -41,10 +32,19 @@ func part1(pageOrders []string, updates [][]int) int {
 		}
 	}
 
+	p1 := part1(pageOrder, updatesInts)
+	p2 := part2(pageOrder, updatesInts)
+	fmt.Println("Part 1:", p1)
+	fmt.Println("Part 2:", p2)
+}
+
+func part1(pageOrders map[int][]int, updates [][]int) int {
+	var total int
+
 	for _, update := range updates {
 		valid := true
 		for i, currentUpdateNum := range update {
-			if orders, exists := pageOrder[currentUpdateNum]; exists {
+			if orders, exists := pageOrders[currentUpdateNum]; exists {
 				for _, order := range orders {
 					for j := 0; j < i; j++ {
 						if update[j] == order {
@@ -67,25 +67,15 @@ func part1(pageOrders []string, updates [][]int) int {
 	return total
 }
 
-func part2(pageOrders []string, updates [][]int) int {
+func part2(pageOrders map[int][]int, updates [][]int) int {
 	var total int
-	pageOrder := make(map[int][]int)
 	var failedUpdates [][]int
-
-	for _, po := range pageOrders {
-		curr := strings.Split(po, "|")
-		if len(curr) == 2 {
-			y, _ := strconv.Atoi(curr[1])
-			x, _ := strconv.Atoi(curr[0])
-			pageOrder[x] = append(pageOrder[x], y)
-		}
-	}
 
 	for _, update := range updates {
 		valid := true
 
 		for i, currentUpdateNum := range update {
-			if orders, exists := pageOrder[currentUpdateNum]; exists {
+			if orders, exists := pageOrders[currentUpdateNum]; exists {
 				for _, order := range orders {
 					for j := 0; j < i; j++ {
 						if update[j] == order {
@@ -114,7 +104,7 @@ func part2(pageOrders []string, updates [][]int) int {
 			changed = false
 			for i := 0; i < len(tmpArr); i++ {
 				currentUpdateNum := tmpArr[i]
-				if orders, exists := pageOrder[currentUpdateNum]; exists {
+				if orders, exists := pageOrders[currentUpdateNum]; exists {
 					for _, order := range orders {
 						for j := i + 1; j < len(tmpArr); j++ {
 							if tmpArr[j] == order {
